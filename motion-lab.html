@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>dhistack.ai — Motion Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#090a18;--bg-2:#140a17;--ink:#f3eee3;--muted:#9c93a8;
+    --oxblood:#4a0e1f;--oxblood-2:#6a1630;--gold:#e8b54d;--gold-2:#f5cf7a;--ember:#ff5a3c;
+    --line:rgba(243,238,227,.09);--glass:rgba(243,238,227,.03);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(1100px 700px at 80% -10%,rgba(74,14,31,.5),transparent 60%);background-attachment:fixed}
+  ::selection{background:var(--oxblood-2);color:#fff}
+  a{color:inherit;text-decoration:none}
+
+  header.top{padding:34px 40px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:rgba(9,10,24,.75);backdrop-filter:blur(14px)}
+  .logo{display:flex;align-items:center;gap:11px;font-family:'Sora';font-weight:700;font-size:19px}
+  .logo .glyph{font-family:'Sora';font-weight:800;font-size:20px;background:linear-gradient(135deg,var(--gold),var(--ember));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .logo span{color:var(--muted);font-weight:400}
+  .kicker{font-family:'Sora';font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+
+  .intro{max-width:820px;margin:0 auto;padding:70px 28px 20px;text-align:center}
+  .intro h1{font-family:'Sora';font-weight:800;letter-spacing:-.03em;font-size:clamp(30px,6vw,58px);line-height:1.02;margin-bottom:18px}
+  .intro p{color:var(--muted);font-size:17px}
+
+  .demo{max-width:1180px;margin:0 auto;padding:70px 28px;border-top:1px solid var(--line)}
+  .demo:first-of-type{border-top:0}
+  .demo .meta{display:flex;gap:18px;align-items:baseline;margin-bottom:22px;flex-wrap:wrap}
+  .demo .n{font-family:'Sora';font-weight:700;font-size:14px;color:var(--gold);letter-spacing:.1em}
+  .demo h2{font-family:'Sora';font-weight:700;font-size:clamp(22px,3.4vw,34px);letter-spacing:-.02em}
+  .demo .desc{color:var(--muted);font-size:15px;max-width:760px;margin-bottom:8px}
+  .demo .use{color:var(--gold-2);font-size:14px;max-width:760px;margin-bottom:24px;font-style:italic;opacity:.85}
+  .stage{position:relative;width:100%;height:min(62vh,560px);border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#07070f;cursor:crosshair}
+  .stage canvas{display:block;width:100%;height:100%}
+  .hint{position:absolute;bottom:16px;left:18px;font-size:12px;letter-spacing:.05em;color:var(--muted);z-index:3;pointer-events:none;background:rgba(9,10,24,.5);padding:6px 12px;border-radius:100px;border:1px solid var(--line)}
+
+  /* scramble demo */
+  #scrambleStage{display:flex;align-items:center;justify-content:center;text-align:center;cursor:default}
+  .scr-wrap{padding:20px}
+  .scr-line{font-family:'Sora';font-weight:800;letter-spacing:-.02em;font-size:clamp(28px,6vw,72px);line-height:1.02}
+  .scr-line .g{background:linear-gradient(115deg,var(--gold-2),var(--gold),var(--ember));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .scr-sub{color:var(--muted);margin-top:16px;font-size:15px}
+
+  /* portal demo */
+  #portalStage{display:flex;align-items:center;justify-content:center;cursor:default}
+  .portal-btn{position:relative;z-index:4;font-family:'Sora';font-weight:600;font-size:18px;padding:18px 34px;border-radius:100px;
+    border:1px solid rgba(232,181,77,.4);background:linear-gradient(120deg,var(--oxblood),var(--oxblood-2));color:var(--gold-2);cursor:pointer;transition:.3s}
+  .portal-btn:hover{transform:translateY(-2px);box-shadow:0 16px 50px -10px rgba(232,181,77,.4);color:#fff}
+  .portal-reveal{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;
+    z-index:3;opacity:0;pointer-events:none;transition:opacity .5s .3s}
+  .portal-reveal.show{opacity:1}
+  .portal-reveal .big{font-family:'Georgia',serif;font-style:italic;font-size:clamp(64px,14vw,130px);background:linear-gradient(135deg,var(--gold-2),var(--ember));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .portal-reveal small{color:var(--muted);letter-spacing:.2em;text-transform:uppercase;font-size:12px}
+  .ripple{position:absolute;border-radius:50%;background:radial-gradient(circle,var(--oxblood-2),var(--oxblood));transform:translate(-50%,-50%) scale(0);z-index:2;pointer-events:none}
+
+  footer{text-align:center;padding:60px 28px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+  .back{display:inline-block;margin-top:10px;color:var(--gold);border-bottom:1px solid var(--line)}
+  .reveal{opacity:0;transform:translateY(24px);transition:.8s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+  <header class="top">
+    <a href="index.html" class="logo"><span class="glyph">◆</span>dhistack<span>.ai</span></a>
+    <span class="kicker">Motion Lab</span>
+  </header>
+
+  <div class="intro">
+    <h1>Five patterns, borrowed from the best.</h1>
+    <p>Signature moves in the spirit of Active Theory — reimagined around <em style="color:var(--gold);font-style:normal">dhī</em>. Move your cursor. Click things. Pick the ones that should live on the site.</p>
+  </div>
+
+  <!-- 1 PARTICLE TEXT MORPH -->
+  <section class="demo reveal">
+    <div class="meta"><span class="n">01</span><h2>Particle Text Morph</h2></div>
+    <p class="desc">Thousands of particles scatter, then assemble into words — and the cursor pushes them apart like a force field. The brand literally <b>forms out of intelligence</b>.</p>
+    <p class="use">On the site: the hero headline builds this way on load — dhī resolves into “dhistack.ai”.</p>
+    <div class="stage" id="pmStage"><canvas id="pm"></canvas><div class="hint">Move your cursor through the particles · click to morph the word</div></div>
+  </section>
+
+  <!-- 2 FLUID METABALLS -->
+  <section class="demo reveal">
+    <div class="meta"><span class="n">02</span><h2>Liquid Intelligence</h2></div>
+    <p class="desc">A slow, breathing fluid of oxblood and gold that bends toward your cursor — organic, alive, never linear. Active Theory's fluid signature, in your palette.</p>
+    <p class="use">On the site: a living background for the hero or the “Why us” section — depth without literal imagery.</p>
+    <div class="stage" id="fluidStage"><canvas id="fluid"></canvas><div class="hint">Move slowly · the fluid follows you</div></div>
+  </section>
+
+  <!-- 3 MAGNETIC GLYPH FIELD -->
+  <section class="demo reveal">
+    <div class="meta"><span class="n">03</span><h2>Magnetic Glyph Field</h2></div>
+    <p class="desc">A field of dhī marks that ripple and scatter away from your cursor, then ease back into the grid. The cursor becomes a force — the page reacts to <b>where you are</b>, not just clicks.</p>
+    <p class="use">On the site: a section divider or the footer background — interactive texture that rewards curiosity.</p>
+    <div class="stage" id="fieldStage"><canvas id="field"></canvas><div class="hint">Sweep across the grid</div></div>
+  </section>
+
+  <!-- 4 SCRAMBLE / DECODE -->
+  <section class="demo reveal">
+    <div class="meta"><span class="n">04</span><h2>Decode Reveal</h2></div>
+    <p class="desc">Headlines resolve out of scrambled characters, like intelligence finding the pattern. Subtle, fast, premium — used by the sharpest tech brands.</p>
+    <p class="use">On the site: every section title decodes as it scrolls into view. Hover to replay.</p>
+    <div class="stage" id="scrambleStage">
+      <div class="scr-wrap">
+        <div class="scr-line" id="scr1" data-text="From dhī to done."></div>
+        <div class="scr-line" id="scr2" data-text="Intelligence, stacked." style="font-size:clamp(20px,4vw,44px)"><span class="g" data-text="Intelligence, stacked."></span></div>
+        <div class="scr-sub">Hover this panel to replay</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 PORTAL TRANSITION -->
+  <section class="demo reveal">
+    <div class="meta"><span class="n">05</span><h2>Portal Transition</h2></div>
+    <p class="desc">Click and a ripple of light expands to reveal the next scene — no hard cut, everything morphs. This is how Active Theory moves between pages.</p>
+    <p class="use">On the site: page changes and the “Start a project” CTA open through this portal — seamless, cinematic.</p>
+    <div class="stage" id="portalStage">
+      <button class="portal-btn" id="portalBtn">Enter the stack →</button>
+      <div class="portal-reveal" id="portalReveal"><span class="big">dhī</span><small>welcome to dhistack.ai</small></div>
+    </div>
+  </section>
+
+  <footer>
+    Built for dhistack.ai · Vrishchika Twilight · Motion Lab
+    <br><a class="back" href="index.html">← Back to the site</a>
+  </footer>
+
+<script>
+/* Reveal */
+const rio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rio.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>rio.observe(el));
+
+/* Helper: run a loop only while stage is on screen */
+function runWhenVisible(stage,startFn){
+  let raf=null,running=false,step=null;
+  step=startFn(()=>raf=requestAnimationFrame(step));
+  const ob=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting&&!running){running=true;raf=requestAnimationFrame(step)}
+    else if(!e.isIntersecting&&running){running=false;cancelAnimationFrame(raf)}
+  }),{threshold:.05});
+  ob.observe(stage);
+}
+function fit(canvas){const s=canvas.parentElement.getBoundingClientRect();const DPR=Math.min(devicePixelRatio||1,2);
+  canvas.width=s.width*DPR;canvas.height=s.height*DPR;return DPR;}
+
+/* ============ 1. PARTICLE TEXT MORPH ============ */
+(function(){
+  const cv=document.getElementById('pm'),ctx=cv.getContext('2d'),stage=document.getElementById('pmStage');
+  let DPR=fit(cv),W=cv.width,H=cv.height;
+  const words=['dhī','dhistack','.ai','intelligence'];let wi=0;
+  const mouse={x:-9999,y:-9999};
+  let particles=[];
+  function sampleText(txt){
+    const off=document.createElement('canvas');off.width=W;off.height=H;const o=off.getContext('2d');
+    o.fillStyle='#fff';o.textAlign='center';o.textBaseline='middle';
+    o.font=`700 ${Math.min(W*0.34,H*0.7)}px 'Sora',sans-serif`;
+    o.fillText(txt,W/2,H/2);
+    const data=o.getImageData(0,0,W,H).data,pts=[],gap=Math.max(5,Math.round(6*DPR));
+    for(let y=0;y<H;y+=gap)for(let x=0;x<W;x+=gap){if(data[(y*W+x)*4+3]>128)pts.push({x,y});}
+    return pts;
+  }
+  function setWord(txt){
+    const targets=sampleText(txt);
+    if(particles.length<targets.length){
+      while(particles.length<targets.length)particles.push({x:Math.random()*W,y:Math.random()*H,vx:0,vy:0});
+    }
+    for(let i=0;i<particles.length;i++){
+      const t=targets[i%targets.length];particles[i].tx=t.x+(Math.random()-.5)*2;particles[i].ty=t.y+(Math.random()-.5)*2;
+    }
+  }
+  setWord(words[0]);
+  stage.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();mouse.x=(e.clientX-r.left)/r.width*W;mouse.y=(e.clientY-r.top)/r.height*H});
+  stage.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999});
+  stage.addEventListener('click',()=>{wi=(wi+1)%words.length;setWord(words[wi])});
+  window.addEventListener('resize',()=>{DPR=fit(cv);W=cv.width;H=cv.height;setWord(words[wi])});
+  runWhenVisible(stage,(next)=>function step(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of particles){
+      const dx=p.tx-p.x,dy=p.ty-p.y;p.vx=(p.vx+dx*.012)*.86;p.vy=(p.vy+dy*.012)*.86;
+      const mdx=p.x-mouse.x,mdy=p.y-mouse.y,md=Math.hypot(mdx,mdy),R=70*DPR;
+      if(md<R){const f=(R-md)/R;p.vx+=mdx/(md||1)*f*4;p.vy+=mdy/(md||1)*f*4;}
+      p.x+=p.vx;p.y+=p.vy;
+      const sp=Math.min(1,(Math.abs(p.vx)+Math.abs(p.vy))/6);
+      ctx.fillStyle=`rgba(${232+sp*20},${181-sp*60},${77+sp*40},${.85})`;
+      ctx.fillRect(p.x,p.y,1.6*DPR,1.6*DPR);
+    }
+    next();
+  });
+})();
+
+/* ============ 2. FLUID METABALLS ============ */
+(function(){
+  const cv=document.getElementById('fluid'),ctx=cv.getContext('2d'),stage=document.getElementById('fluidStage');
+  let DPR=fit(cv),W=cv.width,H=cv.height;
+  const mouse={x:W/2,y:H/2,active:false};
+  const balls=Array.from({length:7},(_,i)=>({x:Math.random()*W,y:Math.random()*H,
+    r:(80+Math.random()*120)*DPR,a:Math.random()*6.28,sp:.002+Math.random()*.004,
+    ox:Math.random()*W,oy:Math.random()*H,rad:(60+Math.random()*90)*DPR}));
+  stage.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();mouse.x=(e.clientX-r.left)/r.width*W;mouse.y=(e.clientY-r.top)/r.height*H;mouse.active=true});
+  stage.addEventListener('mouseleave',()=>mouse.active=false);
+  window.addEventListener('resize',()=>{DPR=fit(cv);W=cv.width;H=cv.height});
+  runWhenVisible(stage,(next)=>function step(){
+    ctx.clearRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+    for(let i=0;i<balls.length;i++){
+      const b=balls[i];b.a+=b.sp;
+      let cx=b.ox+Math.cos(b.a)*b.rad,cy=b.oy+Math.sin(b.a*1.3)*b.rad;
+      if(mouse.active&&i%2===0){cx+=(mouse.x-cx)*.04;cy+=(mouse.y-cy)*.04;}
+      const g=ctx.createRadialGradient(cx,cy,0,cx,cy,b.r);
+      const gold=i%3===0;
+      g.addColorStop(0,gold?'rgba(232,181,77,.5)':'rgba(106,22,48,.6)');
+      g.addColorStop(.5,gold?'rgba(245,90,60,.16)':'rgba(74,14,31,.28)');
+      g.addColorStop(1,'rgba(9,10,24,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,b.r,0,6.29);ctx.fill();
+    }
+    ctx.globalCompositeOperation='source-over';
+    next();
+  });
+})();
+
+/* ============ 3. MAGNETIC GLYPH FIELD ============ */
+(function(){
+  const cv=document.getElementById('field'),ctx=cv.getContext('2d'),stage=document.getElementById('fieldStage');
+  let DPR=fit(cv),W=cv.width,H=cv.height,grid=[];
+  const mouse={x:-9999,y:-9999};
+  function build(){grid=[];const gap=46*DPR;
+    for(let y=gap;y<H;y+=gap)for(let x=gap;x<W;x+=gap)grid.push({ox:x,oy:y,x,y,vx:0,vy:0});}
+  build();
+  stage.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();mouse.x=(e.clientX-r.left)/r.width*W;mouse.y=(e.clientY-r.top)/r.height*H});
+  stage.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999});
+  window.addEventListener('resize',()=>{DPR=fit(cv);W=cv.width;H=cv.height;build()});
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  runWhenVisible(stage,(next)=>function step(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of grid){
+      const dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.hypot(dx,dy),R=120*DPR;
+      if(d<R){const f=(R-d)/R;p.vx+=dx/(d||1)*f*2.4;p.vy+=dy/(d||1)*f*2.4;}
+      p.vx+=(p.ox-p.x)*.05;p.vy+=(p.oy-p.y)*.05;p.vx*=.82;p.vy*=.82;p.x+=p.vx;p.y+=p.vy;
+      const disp=Math.min(1,Math.hypot(p.x-p.ox,p.y-p.oy)/40);
+      ctx.font=`italic 700 ${(12+disp*6)*DPR}px 'Georgia',serif`;
+      ctx.fillStyle=`rgba(${180+disp*75},${140+disp*67},${90+disp*30},${.25+disp*.6})`;
+      ctx.fillText('dhī',p.x,p.y);
+    }
+    next();
+  });
+})();
+
+/* ============ 4. SCRAMBLE / DECODE ============ */
+(function(){
+  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&@→◆012789';
+  function scramble(el){
+    const text=el.dataset.text;let frame=0;const total=text.length*3+20;
+    const start=Array.from({length:text.length},()=>Math.floor(Math.random()*15));
+    (function run(){
+      let out='';for(let i=0;i<text.length;i++){
+        if(frame> start[i]+i*3){out+=text[i];}
+        else if(frame>start[i]-6){out+=chars[Math.floor(Math.random()*chars.length)];}
+        else out+=text[i]===' '?' ':'';
+      }
+      el.textContent=out;frame++;if(frame<total)requestAnimationFrame(run);else el.textContent=text;
+    })();
+  }
+  function play(){document.querySelectorAll('#scrambleStage [data-text]').forEach((el,i)=>setTimeout(()=>scramble(el),i*250));}
+  const st=document.getElementById('scrambleStage');
+  const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){play();}}),{threshold:.4});
+  ob.observe(st);
+  st.addEventListener('mouseenter',play);
+})();
+
+/* ============ 5. PORTAL TRANSITION ============ */
+(function(){
+  const stage=document.getElementById('portalStage'),btn=document.getElementById('portalBtn'),reveal=document.getElementById('portalReveal');
+  let open=false;
+  btn.addEventListener('click',e=>{
+    const r=stage.getBoundingClientRect();
+    const rip=document.createElement('div');rip.className='ripple';
+    const x=e.clientX-r.left,y=e.clientY-r.top;
+    const size=Math.hypot(r.width,r.height)*2.2;
+    rip.style.left=x+'px';rip.style.top=y+'px';rip.style.width=size+'px';rip.style.height=size+'px';
+    rip.style.transition='transform .9s cubic-bezier(.7,0,.3,1),opacity .6s .7s';
+    stage.appendChild(rip);requestAnimationFrame(()=>{rip.style.transform='translate(-50%,-50%) scale(1)';});
+    if(!open){reveal.classList.add('show');btn.style.opacity=0;btn.style.pointerEvents='none';open=true;
+      setTimeout(()=>{rip.style.opacity=0;},900);
+    }else{
+      reveal.classList.remove('show');btn.style.opacity=1;btn.style.pointerEvents='auto';open=false;
+      setTimeout(()=>rip.remove(),1500);
+    }
+    setTimeout(()=>{if(rip.parentElement&&open===false)rip.remove();},2000);
+  });
+})();
+</script>
+</body>
+</html>

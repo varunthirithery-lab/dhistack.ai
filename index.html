@@ -148,7 +148,7 @@
   .why-item h4 .k{color:var(--gold)}
   .why-item p{color:var(--muted);font-size:15px;margin-top:8px;padding-left:26px}
   .why-visual{aspect-ratio:1;border:1px solid var(--line);border-radius:28px;position:relative;overflow:hidden;background:radial-gradient(circle at 30% 20%,rgba(74,14,31,.6),transparent 55%),radial-gradient(circle at 80% 90%,rgba(232,181,77,.14),transparent 55%)}
-  .why-visual .orb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Georgia',serif;font-style:italic;font-size:150px;background:linear-gradient(135deg,var(--gold-2),var(--gold),var(--ember));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 40px rgba(232,181,77,.35));animation:float 6s ease-in-out infinite}
+  .why-visual .core-art{position:absolute;inset:0;width:100%;height:100%;animation:float 7s ease-in-out infinite}
   @keyframes float{0%,100%{transform:translate(-50%,-52%)}50%{transform:translate(-50%,-48%)}}
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;border:1px solid var(--line);border-radius:24px;padding:44px 30px;background:var(--glass)}
   .stat b{font-family:'Sora';font-weight:800;font-size:clamp(34px,5vw,54px);letter-spacing:-.03em;background:linear-gradient(115deg,#fff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;display:block}
@@ -300,7 +300,54 @@
             <div class="why-item reveal"><h4><span class="k">04</span> A partner, not a vendor</h4><p>Direct access to the makers. Honest timelines. Skin in your game.</p></div>
           </div>
         </div>
-        <div class="why-visual reveal"><span class="orb">dhī</span></div>
+        <div class="why-visual reveal">
+          <svg class="core-art" viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-label="Abstract visualization of an intelligence core">
+            <defs>
+              <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#fff7e6"/><stop offset="20%" stop-color="#f5cf7a"/>
+                <stop offset="52%" stop-color="#e8b54d"/><stop offset="100%" stop-color="#ff5a3c" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="hz" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#6a1630" stop-opacity=".75"/><stop offset="100%" stop-color="#6a1630" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6"/></filter>
+              <filter id="soft2" x="-90%" y="-90%" width="280%" height="280%"><feGaussianBlur stdDeviation="20"/></filter>
+            </defs>
+            <circle cx="220" cy="220" r="205" fill="url(#hz)"/>
+            <g fill="none" stroke="#e8b54d">
+              <ellipse cx="220" cy="220" rx="152" ry="152" stroke-opacity=".22"><animateTransform attributeName="transform" type="rotate" from="0 220 220" to="360 220 220" dur="44s" repeatCount="indefinite"/></ellipse>
+              <ellipse cx="220" cy="220" rx="158" ry="74" stroke-opacity=".16"><animateTransform attributeName="transform" type="rotate" from="0 220 220" to="360 220 220" dur="28s" repeatCount="indefinite"/></ellipse>
+              <ellipse cx="220" cy="220" rx="74" ry="158" stroke-opacity=".16"><animateTransform attributeName="transform" type="rotate" from="360 220 220" to="0 220 220" dur="32s" repeatCount="indefinite"/></ellipse>
+            </g>
+            <g stroke="#e8b54d" stroke-opacity=".28" stroke-width="1">
+              <line x1="220" y1="220" x2="370" y2="220"/><line x1="220" y1="220" x2="326" y2="114"/>
+              <line x1="220" y1="220" x2="220" y2="72"/><line x1="220" y1="220" x2="114" y2="114"/>
+              <line x1="220" y1="220" x2="70" y2="220"/><line x1="220" y1="220" x2="114" y2="326"/>
+              <line x1="220" y1="220" x2="220" y2="368"/><line x1="220" y1="220" x2="326" y2="326"/>
+            </g>
+            <g fill="#f5cf7a">
+              <circle cx="370" cy="220" r="3.5"><animate attributeName="opacity" values=".4;1;.4" dur="3.2s" repeatCount="indefinite"/></circle>
+              <circle cx="326" cy="114" r="3"><animate attributeName="opacity" values=".4;1;.4" dur="2.6s" begin=".3s" repeatCount="indefinite"/></circle>
+              <circle cx="220" cy="72" r="3.5"><animate attributeName="opacity" values=".4;1;.4" dur="3.6s" begin=".6s" repeatCount="indefinite"/></circle>
+              <circle cx="114" cy="114" r="3"><animate attributeName="opacity" values=".4;1;.4" dur="2.9s" begin=".9s" repeatCount="indefinite"/></circle>
+              <circle cx="70" cy="220" r="3.5"><animate attributeName="opacity" values=".4;1;.4" dur="3.3s" begin="1.2s" repeatCount="indefinite"/></circle>
+              <circle cx="114" cy="326" r="3"><animate attributeName="opacity" values=".4;1;.4" dur="2.7s" begin=".2s" repeatCount="indefinite"/></circle>
+              <circle cx="220" cy="368" r="3.5"><animate attributeName="opacity" values=".4;1;.4" dur="3.5s" begin=".5s" repeatCount="indefinite"/></circle>
+              <circle cx="326" cy="326" r="3"><animate attributeName="opacity" values=".4;1;.4" dur="3s" begin=".8s" repeatCount="indefinite"/></circle>
+            </g>
+            <g>
+              <g><circle cx="220" cy="80" r="4" fill="#f5cf7a"/><animateTransform attributeName="transform" type="rotate" from="0 220 220" to="360 220 220" dur="15s" repeatCount="indefinite"/></g>
+              <g><circle cx="325" cy="220" r="3" fill="#ff5a3c"/><animateTransform attributeName="transform" type="rotate" from="360 220 220" to="0 220 220" dur="9s" repeatCount="indefinite"/></g>
+              <g><circle cx="220" cy="390" r="3" fill="#e8b54d"/><animateTransform attributeName="transform" type="rotate" from="0 220 220" to="360 220 220" dur="23s" repeatCount="indefinite"/></g>
+              <g><circle cx="150" cy="220" r="2.6" fill="#f5cf7a"/><animateTransform attributeName="transform" type="rotate" from="0 220 220" to="360 220 220" dur="7s" repeatCount="indefinite"/></g>
+              <g><circle cx="315" cy="120" r="3" fill="#ff5a3c"/><animateTransform attributeName="transform" type="rotate" from="360 220 220" to="0 220 220" dur="19s" repeatCount="indefinite"/></g>
+              <g><circle cx="220" cy="34" r="2.4" fill="#e8b54d"/><animateTransform attributeName="transform" type="rotate" from="0 220 220" to="360 220 220" dur="30s" repeatCount="indefinite"/></g>
+            </g>
+            <circle cx="220" cy="220" r="120" fill="url(#cg)" opacity=".5" filter="url(#soft2)"><animate attributeName="opacity" values=".38;.68;.38" dur="4.5s" repeatCount="indefinite"/></circle>
+            <circle cx="220" cy="220" r="48" fill="url(#cg)" filter="url(#soft)"><animate attributeName="r" values="44;54;44" dur="4.5s" repeatCount="indefinite"/></circle>
+            <circle cx="220" cy="220" r="19" fill="#fff7e6"><animate attributeName="opacity" values=".85;1;.85" dur="2.6s" repeatCount="indefinite"/></circle>
+          </svg>
+        </div>
       </div>
       <div class="stats reveal">
         <div class="stat"><b data-count="100">0</b><span>% custom-built</span></div>

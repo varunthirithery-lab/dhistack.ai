@@ -60,41 +60,26 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* Cursor — targeting reticle */
+    /* Cursor — minimal dot + ring */
     #cur {
       position: fixed; top: 0; left: 0; pointer-events: none;
-      z-index: 10000; width: 36px; height: 36px;
+      z-index: 10000; width: 20px; height: 20px;
       transform: translate(-50%,-50%);
       will-change: left, top;
-      transition: width .18s ease, height .18s ease;
+      border-radius: 50%;
+      border: 1px solid rgba(99,102,241,.4);
+      transition: width .2s ease, height .2s ease, border-color .2s ease;
     }
-    /* 4 corner brackets via child <b> elements */
-    #cur b {
-      display: block; position: absolute;
-      width: 9px; height: 9px;
-      border: 1.5px solid rgba(99,102,241,.85);
-      transition: border-color .18s ease, width .18s ease, height .18s ease;
-    }
-    #cur b:nth-child(1){top:0;left:0;border-right:none;border-bottom:none;border-radius:2px 0 0 0}
-    #cur b:nth-child(2){top:0;right:0;border-left:none;border-bottom:none;border-radius:0 2px 0 0}
-    #cur b:nth-child(3){bottom:0;left:0;border-right:none;border-top:none;border-radius:0 0 0 2px}
-    #cur b:nth-child(4){bottom:0;right:0;border-left:none;border-top:none;border-radius:0 0 2px 0}
-    /* Center emerald dot */
     #cur i {
       display: block; position: absolute;
-      width: 3px; height: 3px;
+      width: 4px; height: 4px;
       top: 50%; left: 50%; transform: translate(-50%,-50%);
-      background: var(--emerald); border-radius: 50%;
-      box-shadow: 0 0 7px var(--emerald), 0 0 14px rgba(16,185,129,.35);
-      transition: background .18s, box-shadow .18s;
+      background: var(--gold); border-radius: 50%;
+      box-shadow: 0 0 5px rgba(245,158,11,.5);
+      transition: background .2s;
     }
-    /* Hover state — lock-on */
-    body.ch #cur { width: 50px; height: 50px; }
-    body.ch #cur b { border-color: var(--gold); width: 11px; height: 11px; }
-    body.ch #cur i {
-      background: var(--gold);
-      box-shadow: 0 0 7px var(--gold), 0 0 18px rgba(245,158,11,.4);
-    }
+    body.ch #cur { width: 32px; height: 32px; border-color: var(--gold); }
+    body.ch #cur i { background: var(--violet-2); }
     @media (max-width: 768px) { #cur { display: none; } }
 
     /* NAV */
@@ -528,7 +513,7 @@
 
 <!-- GRAIN + CURSOR -->
 <div class="grain"></div>
-<div id="cur" aria-hidden="true"><b></b><b></b><b></b><b></b><i></i></div>
+<div id="cur" aria-hidden="true"><i></i></div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -899,12 +884,12 @@
 </footer>
 
 <script>
-// ── Cursor — targeting reticle ───────────────────
+// ── Cursor — minimal dot ──────────────────────────
 const CUR=document.getElementById('cur');
 let mx=0,my=0,cx=0,cy=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
 (function loop(){
-  cx+=(mx-cx)*.12; cy+=(my-cy)*.12;
+  cx+=(mx-cx)*.35; cy+=(my-cy)*.35;
   CUR.style.left=cx+'px'; CUR.style.top=cy+'px';
   requestAnimationFrame(loop);
 })();

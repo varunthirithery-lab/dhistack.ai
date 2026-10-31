@@ -57,18 +57,42 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* Cursor */
-    .cur-dot, .cur-ring {
+    /* Cursor — targeting reticle */
+    #cur {
       position: fixed; top: 0; left: 0; pointer-events: none;
-      z-index: 9999; transform: translate(-50%,-50%); border-radius: 50%;
+      z-index: 9999; width: 36px; height: 36px;
+      transform: translate(-50%,-50%);
+      will-change: left, top;
+      transition: width .18s ease, height .18s ease;
     }
-    .cur-dot  { width: 6px; height: 6px; background: var(--gold); }
-    .cur-ring {
-      width: 28px; height: 28px; border: 1.5px solid rgba(99,102,241,.5);
-      transition: width .18s, height .18s, border-color .18s;
+    /* 4 corner brackets via child <b> elements */
+    #cur b {
+      display: block; position: absolute;
+      width: 9px; height: 9px;
+      border: 1.5px solid rgba(99,102,241,.85);
+      transition: border-color .18s ease, width .18s ease, height .18s ease;
     }
-    body.ch .cur-ring { width: 44px; height: 44px; border-color: var(--gold); }
-    @media (max-width: 768px) { .cur-dot, .cur-ring { display: none; } }
+    #cur b:nth-child(1){top:0;left:0;border-right:none;border-bottom:none;border-radius:2px 0 0 0}
+    #cur b:nth-child(2){top:0;right:0;border-left:none;border-bottom:none;border-radius:0 2px 0 0}
+    #cur b:nth-child(3){bottom:0;left:0;border-right:none;border-top:none;border-radius:0 0 0 2px}
+    #cur b:nth-child(4){bottom:0;right:0;border-left:none;border-top:none;border-radius:0 0 2px 0}
+    /* Center emerald dot */
+    #cur i {
+      display: block; position: absolute;
+      width: 3px; height: 3px;
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      background: var(--emerald); border-radius: 50%;
+      box-shadow: 0 0 7px var(--emerald), 0 0 14px rgba(16,185,129,.35);
+      transition: background .18s, box-shadow .18s;
+    }
+    /* Hover state — lock-on */
+    body.ch #cur { width: 50px; height: 50px; }
+    body.ch #cur b { border-color: var(--gold); width: 11px; height: 11px; }
+    body.ch #cur i {
+      background: var(--gold);
+      box-shadow: 0 0 7px var(--gold), 0 0 18px rgba(245,158,11,.4);
+    }
+    @media (max-width: 768px) { #cur { display: none; } }
 
     /* NAV */
     nav {
@@ -496,8 +520,7 @@
 
 <!-- GRAIN + CURSOR -->
 <div class="grain"></div>
-<div class="cur-dot" id="cd"></div>
-<div class="cur-ring" id="cr"></div>
+<div id="cur" aria-hidden="true"><b></b><b></b><b></b><b></b><i></i></div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -868,14 +891,13 @@
 </footer>
 
 <script>
-// ── Cursor ───────────────────────────────────────
-const CD=document.getElementById('cd'),CR=document.getElementById('cr');
-let mx=0,my=0,rx=0,ry=0;
+// ── Cursor — targeting reticle ───────────────────
+const CUR=document.getElementById('cur');
+let mx=0,my=0,cx=0,cy=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
 (function loop(){
-  CD.style.left=mx+'px';CD.style.top=my+'px';
-  rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
-  CR.style.left=rx+'px';CR.style.top=ry+'px';
+  cx+=(mx-cx)*.12; cy+=(my-cy)*.12;
+  CUR.style.left=cx+'px'; CUR.style.top=cy+'px';
   requestAnimationFrame(loop);
 })();
 document.querySelectorAll('a,button,.layer,.tfcard').forEach(el=>{

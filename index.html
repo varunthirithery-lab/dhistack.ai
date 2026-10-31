@@ -967,7 +967,7 @@ document.querySelectorAll('.decode').forEach(el=>DO.observe(el));
   const cv=document.getElementById('hc2'),ctx=cv.getContext('2d');
   const wrap=cv.parentElement;
   let DPR,W,H,particles=[],wi=0;
-  const words=['dhī','dhistack','.ai','security','intelligence'];
+  const words=['dhistack.ai','dhī'];
   const mouse={x:-9999,y:-9999};
 
   function fit(){
@@ -980,8 +980,11 @@ document.querySelectorAll('.decode').forEach(el=>DO.observe(el));
     const off=document.createElement('canvas');off.width=W;off.height=H;
     const o=off.getContext('2d');
     o.fillStyle='#fff';o.textAlign='center';o.textBaseline='middle';
-    const fs=Math.min(W*.32,H*.68);
+    let fs=H*.62;
     o.font=`700 ${fs}px 'Space Grotesk',system-ui,sans-serif`;
+    const maxW=W*.94;
+    const tw=o.measureText(txt).width;
+    if(tw>maxW){ fs=fs*(maxW/tw); o.font=`700 ${fs}px 'Space Grotesk',system-ui,sans-serif`; }
     o.fillText(txt,W/2,H/2);
     const data=o.getImageData(0,0,W,H).data,pts=[],gap=Math.max(5,Math.round(6*DPR));
     for(let y=0;y<H;y+=gap)for(let x=0;x<W;x+=gap)if(data[(y*W+x)*4+3]>100)pts.push({x,y});
@@ -1017,7 +1020,6 @@ document.querySelectorAll('.decode').forEach(el=>DO.observe(el));
     requestAnimationFrame(animate);
   }
   fit();setWord(words[0]);animate();
-  setInterval(()=>{wi=(wi+1)%words.length;setWord(words[wi]);},3000);
   window.addEventListener('resize',()=>{fit();setWord(words[wi]);},{passive:true});
 })();
 

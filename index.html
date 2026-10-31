@@ -76,6 +76,7 @@
       display: flex; align-items: center; justify-content: space-between;
       padding-inline: max(28px, env(safe-area-inset-left, 0px));
       transition: background .3s, box-shadow .3s;
+      overflow: hidden;
     }
     nav.sc {
       background: rgba(5,6,15,.92);
@@ -84,7 +85,7 @@
     }
     .nl { font-family: var(--ff-h); font-size: 1.2rem; font-weight: 700; letter-spacing: -.02em; }
     .nl .d { color: var(--gold); }
-    .nlinks { display: flex; align-items: center; gap: 1.875rem; font-size: .875rem; font-weight: 500; color: var(--muted); }
+    .nlinks { display: flex; align-items: center; gap: 1.875rem; font-size: .875rem; font-weight: 500; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
     .nlinks a:hover { color: var(--text); }
     .nbtn {
       display: inline-flex; align-items: center; gap: .4rem;
@@ -163,14 +164,17 @@
        HERO
        =========================================== */
     #hero {
-      min-height: 100svh; display: flex; flex-direction: column;
+      min-height: 100vh; display: flex; flex-direction: column;
       justify-content: center; padding-top: 66px;
       position: relative; overflow: hidden; z-index: 2;
     }
     #hc { position: absolute; inset: 0; z-index: 0; }
     .hinner {
       position: relative; z-index: 1; max-width: var(--mw);
-      margin-inline: auto; padding: 3.5rem max(28px,env(safe-area-inset-left,0px));
+      margin-inline: auto; width: 100%;
+      padding-inline: max(28px,env(safe-area-inset-left,0px));
+      padding-block: 3.5rem;
+      display: flex; flex-direction: column; align-items: flex-start;
     }
     .hbadge {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -181,7 +185,7 @@
     }
     .hbdot { width: 6px; height: 6px; background: var(--emerald); border-radius: 50%; animation: pdot 2s infinite; }
     @keyframes pdot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
-    .hcanvas-wrap { width: 100%; max-width: 900px; height: min(28vh, 220px); margin-bottom: .5rem; }
+    .hcanvas-wrap { width: 100%; max-width: 680px; height: min(24vh, 180px); margin-bottom: .75rem; align-self: flex-start; }
     #hc2 { display: block; width: 100%; height: 100%; }
     .hh1 {
       font-family: var(--ff-h);
@@ -197,6 +201,7 @@
     .hstats {
       display: flex; flex-wrap: wrap; gap: 2.5rem;
       padding-top: 2rem; border-top: 1px solid var(--border);
+      width: 100%;
     }
     .hsv { font-family: var(--ff-h); font-size: 1.625rem; font-weight: 700; letter-spacing: -.02em; }
     .hsv span { color: var(--gold); }

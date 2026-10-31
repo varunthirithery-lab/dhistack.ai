@@ -121,16 +121,18 @@
     .burg { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
     .burg span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
     .mnav {
-      display: none; position: fixed; top: 66px; left: 0; right: 0; z-index: 199;
+      display: none !important; visibility: hidden;
+      position: fixed; top: 66px; left: 0; right: 0; z-index: 199;
       background: rgba(5,6,15,.97); backdrop-filter: blur(20px);
       padding: 1.5rem max(28px,env(safe-area-inset-left,0px)) 2rem;
       border-bottom: 1px solid var(--border); flex-direction: column; gap: 1.125rem;
     }
-    .mnav.open { display: flex; }
+    .mnav.open { display: flex !important; visibility: visible; }
     .mnav a { font-size: 1rem; font-weight: 500; color: var(--muted); padding: .5rem 0; border-bottom: 1px solid var(--border); }
     .mnav a:hover { color: var(--text); }
     .mnav .nbtn { justify-content: center; margin-top: .5rem; }
-    @media (max-width: 860px) { .nlinks { display: none; } .nbtn-d { display: none; } .burg { display: flex; } }
+    @media (max-width: 860px) { .nlinks { display: none !important; } .nbtn-d { display: none !important; } .burg { display: flex; } }
+    @media (min-width: 861px) { .mnav { display: none !important; visibility: hidden !important; } .burg { display: none !important; } }
 
     /* Section shell */
     .sec {

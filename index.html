@@ -60,7 +60,7 @@
     /* Cursor — targeting reticle */
     #cur {
       position: fixed; top: 0; left: 0; pointer-events: none;
-      z-index: 9999; width: 36px; height: 36px;
+      z-index: 10000; width: 36px; height: 36px;
       transform: translate(-50%,-50%);
       will-change: left, top;
       transition: width .18s ease, height .18s ease;
@@ -96,15 +96,16 @@
 
     /* NAV */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; height: 66px; z-index: 200;
+      position: fixed; top: 0; left: 0; right: 0; height: 66px; z-index: 9000;
       display: flex; align-items: center; justify-content: space-between;
       padding-inline: max(28px, env(safe-area-inset-left, 0px));
       transition: background .3s, box-shadow .3s;
       overflow: hidden;
+      background: rgba(5,6,15,.82);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
     nav.sc {
-      background: rgba(5,6,15,.92);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      background: rgba(5,6,15,.96);
       box-shadow: 0 1px 0 rgba(255,255,255,.06);
     }
     .nl { font-family: var(--ff-h); font-size: 1.2rem; font-weight: 700; letter-spacing: -.02em; }

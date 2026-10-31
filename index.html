@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>dhistack.ai — Intelligence, Stacked.</title>
   <meta name="description" content="dhistack.ai — An AI-native software and security house. Cybersecurity solutions & consultancy, custom software, web apps, and mobile apps." />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -108,8 +111,9 @@
       background: rgba(5,6,15,.96);
       box-shadow: 0 1px 0 rgba(255,255,255,.06);
     }
-    .nl { font-family: var(--ff-h); font-size: 1.2rem; font-weight: 700; letter-spacing: -.02em; }
-    .nl .d { color: var(--gold); }
+    .nl { display: inline-flex; align-items: center; gap: .625rem; font-family: var(--ff-h); font-size: 1.2rem; font-weight: 700; letter-spacing: -.02em; }
+    .nl .d { color: var(--violet-2); }
+    .nl img { height: 30px; width: auto; display: block; }
     .nlinks { display: flex; align-items: center; gap: 1.875rem; font-size: .875rem; font-weight: 500; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
     .nlinks a:hover { color: var(--text); }
     .nbtn {
@@ -499,8 +503,9 @@
     .ftin { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; margin-bottom: 2.75rem; }
     @media (max-width: 768px) { .ftin { grid-template-columns: 1fr 1fr; gap: 2rem; } }
     @media (max-width: 480px) { .ftin { grid-template-columns: 1fr; } }
-    .fbn { font-family: var(--ff-h); font-size: 1.2rem; font-weight: 700; margin-bottom: .625rem; }
-    .fbn .d { color: var(--gold); }
+    .fbn { display: inline-flex; align-items: center; gap: .625rem; font-family: var(--ff-h); font-size: 1.2rem; font-weight: 700; margin-bottom: .625rem; }
+    .fbn .d { color: var(--violet-2); }
+    .fbn img { height: 32px; width: auto; display: block; }
     .ftg { font-size: .875rem; color: var(--muted); line-height: 1.6; max-width: 270px; }
     .fct { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--soft); margin-bottom: .875rem; }
     .flinks { display: flex; flex-direction: column; gap: .5rem; }
@@ -527,7 +532,7 @@
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#hero" class="nl"><span class="d">dhi</span>stack.ai</a>
+  <a href="#hero" class="nl"><img src="assets/logo-mark.png" alt="dhistack.ai"><span class="d">dhi</span>stack.ai</a>
   <div class="nlinks">
     <a href="#services">Services</a>
     <a href="#threatforge">ThreatForge</a>
@@ -864,7 +869,7 @@
   <div style="max-width:var(--mw);margin-inline:auto">
     <div class="ftin">
       <div>
-        <div class="fbn"><span class="d">dhi</span>stack.ai</div>
+        <div class="fbn"><img src="assets/logo-mark.png" alt="dhistack.ai"><span class="d">dhi</span>stack.ai</div>
         <p class="ftg">An AI-native software and security house. Intelligence, stacked into everything we build and secure.</p>
       </div>
       <div>
